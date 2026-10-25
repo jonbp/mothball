@@ -99,10 +99,10 @@ If the site uses a page cache, clear it after changing a setting.
 
 == Changelog ==
 
-= 1.1.0 =
-* Settings can be set in wp-config.php with the MOTHBALL_SETTINGS constant, and are locked on the screen.
-* New switches: XML-RPC, page head clean-up, Events and News, the block and pattern directories, and Heartbeat.
-* New wp mothball WP-CLI command.
-
 = 1.0.0 =
 * First release.
+* Switches for comments, search, the blog and XML-RPC.
+* Clean-up switches for the page head, Events and News, the block and pattern directories, and Heartbeat.
+* REST API route groups can be left open, limited to signed-in users or switched off.
+* Settings can be set in wp-config.php with the MOTHBALL_SETTINGS constant, and are locked on the screen.
+* New wp mothball WP-CLI command.

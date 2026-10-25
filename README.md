@@ -25,13 +25,16 @@ Nothing is deleted. Mothball never changes your posts, comments, core settings o
 
 ## Installation
 
-Clone the plugin into your plugins folder and activate it:
+Run this from the root of a WordPress or Bedrock project to fetch the latest release into the plugins folder, then activate it:
 
 ```sh
-cd wp-content/plugins
-git clone https://github.com/jonbp/mothball.git
+curl -sSL https://raw.githubusercontent.com/jonbp/mothball/main/install.sh | bash
 wp plugin activate mothball
 ```
+
+Run it again whenever you want to update. Options are passed through with `bash -s --`, so `bash -s -- --version=1.0.0` pins a release and `bash -s -- --path=/path/to/project` installs somewhere other than the current directory. See `--help` for the rest.
+
+You can also download `mothball.zip` from the [latest release](https://github.com/jonbp/mothball/releases/latest) and upload it under **Plugins → Add New Plugin → Upload Plugin**.
 
 Then head to **Settings → Mothball** and switch off whatever the site doesn't need.
 
