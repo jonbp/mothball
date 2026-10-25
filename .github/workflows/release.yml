@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ['*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # The plugin header, the version constant and the readme's stable tag all
+      # have to match the tag, or installs and asset URLs report the wrong version
+      - name: Check plugin version
+        run: |
+          header=$(sed -n 's/^[[:space:]*]*Version:[[:space:]]*//p' mothball.php)
+          constant=$(sed -n "s/.*'MOTHBALL_VERSION', '\([^']*\)'.*/\1/p" mothball.php)
+          stable=$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt)
+          for pair in "mothball.php header:$header" "MOTHBALL_VERSION:$constant" "readme.txt stable tag:$stable"; do
+            if [ "${pair##*:}" != "$GITHUB_REF_NAME" ]; then
+              echo "::error::The ${pair%:*} is ${pair##*:}, but the tag is $GITHUB_REF_NAME"
+              exit 1
+            fi
+          done
+
+      # The notes are the tag's section of CHANGELOG.md, e.g. '### 1.0.0: 25/10/2026'
+      - name: Read release notes
+        run: |
+          awk -v tag="$GITHUB_REF_NAME" '
+            /^### / { found = index($0, "### " tag ":") == 1; next }
+            found
+          ' CHANGELOG.md | sed -e '/./,$!d' > notes.md
+          if [ ! -s notes.md ]; then
+            echo "::error::No CHANGELOG.md entry for $GITHUB_REF_NAME"
+            exit 1
+          fi
+
+      # A zip with a mothball/ folder inside, for Plugins → Add New → Upload.
+      # Files marked export-ignore in .gitattributes are left out.
+      - name: Build zip
+        run: git archive --format=zip --prefix=mothball/ -o mothball.zip "$GITHUB_REF_NAME"
+
+      - name: Publish release
+        run: gh release create "$GITHUB_REF_NAME" mothball.zip --title "$GITHUB_REF_NAME" --notes-file notes.md
+        env:
+          GH_TOKEN: ${{ github.token }}
