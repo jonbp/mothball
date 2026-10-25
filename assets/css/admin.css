@@ -1,0 +1,236 @@
+/**
+ * Settings > Mothball: a sticky sidebar with the title, section links and save
+ * button, beside the settings.
+ *
+ * @package Mothball
+ */
+
+.mothball-layout {
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr);
+	gap: 32px;
+	align-items: start;
+}
+
+/* Stick at the admin bar (32px) plus the .wrap top margin (10px), where it starts, so it never shifts. */
+.mothball-sidebar {
+	position: sticky;
+	top: 42px;
+}
+
+.mothball .mothball-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: #0891c7;
+	font-weight: 700;
+}
+
+.mothball-title img {
+	flex: none;
+}
+
+.mothball-sidebar .submit {
+	margin: 16px 0 0;
+	padding: 0;
+}
+
+.mothball-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 0;
+	margin: 12px 0 0;
+	padding: 0;
+	font-size: 12px;
+	list-style: none;
+}
+
+.mothball-links li {
+	margin: 0;
+}
+
+.mothball-links li + li::before {
+	content: "·";
+	margin: 0 6px;
+	color: #8c8f94;
+}
+
+.mothball-links a {
+	color: #50575e;
+	text-decoration: none;
+}
+
+.mothball-links a:hover,
+.mothball-links a:focus {
+	color: #0891c7;
+	text-decoration: underline;
+}
+
+.mothball-nav {
+	margin-top: 8px;
+	padding: 12px 0;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.mothball-nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.mothball-nav li {
+	margin: 0;
+}
+
+.mothball-nav a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 6px 16px;
+	color: #1d2327;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.mothball-nav ul ul a {
+	padding-left: 28px;
+	color: #50575e;
+	font-weight: 400;
+}
+
+.mothball-nav a:hover,
+.mothball-nav a:focus {
+	color: var(--wp-admin-theme-color, #2271b1);
+	background: #f6f7f7;
+}
+
+.mothball-nav a:focus {
+	outline: 2px solid var(--wp-admin-theme-color, #2271b1);
+	outline-offset: -2px;
+	box-shadow: none;
+}
+
+.mothball-nav-badge {
+	padding: 0 6px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 18px;
+	background: var(--wp-admin-theme-color, #2271b1);
+	border-radius: 9px;
+}
+
+/* Checkboxes drawn as switches. They stay native inputs, so forms and keyboards work as usual. */
+.mothball input[type="checkbox"].mothball-toggle {
+	position: relative;
+	width: 36px;
+	min-width: 36px;
+	height: 20px;
+	margin: -2px 8px 0 0;
+	vertical-align: middle;
+	background: #fff;
+	border: 1px solid #8c8f94;
+	border-radius: 10px;
+	box-shadow: none;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mothball input[type="checkbox"].mothball-toggle::before,
+.mothball input[type="checkbox"].mothball-toggle:checked::before {
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	float: none;
+	width: 12px;
+	height: 12px;
+	margin: 0;
+	background: #50575e;
+	border-radius: 50%;
+	transition: transform 0.15s ease;
+}
+
+.mothball input[type="checkbox"].mothball-toggle:checked {
+	background: var(--wp-admin-theme-color, #2271b1);
+	border-color: var(--wp-admin-theme-color, #2271b1);
+}
+
+.mothball input[type="checkbox"].mothball-toggle:checked::before {
+	background: #fff;
+	transform: translateX(16px);
+}
+
+.mothball input[type="checkbox"].mothball-toggle:focus {
+	outline: 2px solid transparent;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--wp-admin-theme-color, #2271b1);
+}
+
+.mothball input[type="checkbox"].mothball-toggle:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* Settings that wp-config.php sets. */
+.mothball-locked {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 600;
+}
+
+.mothball-locked .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.mothball input[type="checkbox"].mothball-toggle,
+	.mothball input[type="checkbox"].mothball-toggle::before {
+		transition: none;
+	}
+}
+
+/* Land anchored sections clear of the admin bar, and mark where you landed. */
+.mothball-anchor {
+	scroll-margin-top: 52px;
+}
+
+.mothball tr:target > th,
+.mothball tr:target > td {
+	background: #f0f6fc;
+}
+
+.mothball-intro {
+	margin-top: 18px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+	html:has(.mothball-nav) {
+		scroll-behavior: smooth;
+	}
+}
+
+@media screen and (max-width: 960px) {
+
+	.mothball-layout {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 16px;
+	}
+
+	.mothball-sidebar {
+		position: static;
+	}
+}
+
+@media screen and (max-width: 782px) {
+
+	.mothball-anchor {
+		scroll-margin-top: 16px;
+	}
+}
